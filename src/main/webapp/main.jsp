@@ -15,8 +15,8 @@
 <script>                                                                  
 // 뒤로가기(bfcache) 복귀 시 강제 리로드                                            
   window.onpageshow = function(e) { if (e.persisted) location.reload(); };	
-  </script>                                                               
-    
+  </script>
+
 <style>
 * {
 	margin: 0;
