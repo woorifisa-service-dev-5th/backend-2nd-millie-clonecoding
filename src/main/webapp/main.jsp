@@ -11,6 +11,12 @@
 <meta http-equiv="Expires" content="0">
 <meta http-equiv="Cache-Control"
 	content="no-cache, no-store, must-revalidate">
+
+<script>                                                                  
+// 뒤로가기(bfcache) 복귀 시 강제 리로드                                            
+  window.onpageshow = function(e) { if (e.persisted) location.reload(); };	
+  </script>                                                               
+    
 <style>
 * {
 	margin: 0;
@@ -502,7 +508,7 @@ body {
                     	const contextPath = '<%=request.getContextPath()%>';
                     	function logout() {
                     	    window.location.href = contextPath + '/logout';
-                    	}
+                    	}R
                     	</script>
 					</div>
 				</c:when>
@@ -675,24 +681,6 @@ body {
             //         }
             //     });
         
-        	HttpSession session = req.getSession(false); 
-        }
-
-        // 사용자 데이터 설정
-        function setUserData(user) {
-            currentUser = user;
-            document.getElementById('user-nickname').textContent = user.nickname;
-            document.getElementById('user-nickname-display').textContent = user.nickname;
-            document.getElementById('following-count').textContent = user.followingCount || 0;
-            document.getElementById('follower-count').textContent = user.followerCount || 0;
-            
-            // 로그인 상태 UI 변경
-            document.getElementById('user-info').classList.add('logged-in');
-            
-            // 프로필 이미지 설정
-            if (user.profileImage) {
-                document.getElementById('profile-avatar').style.backgroundImage = url({user.profileImage});
-            }
         }
 
         // 초기 데이터 로드
