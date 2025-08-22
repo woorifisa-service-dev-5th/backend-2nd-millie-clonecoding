@@ -35,9 +35,6 @@ public class DBConnection {
         String dbUsername = properties.getProperty("username");
         String dbPassword = properties.getProperty("password");
         
-        System.out.println(dbUsername);
-       
-
         Class.forName(dbDriver);
         return DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
     }

@@ -43,8 +43,15 @@ public class LoginServlet extends HttpServlet {
 
 		// 3. 로그인 결과에 따라 페이지 이동
 		if (user != null) {
-			// 로그인 성공 시: 세션에 사용자 정보를 저장하고 메인 페이지로 리다이렉트
+			// 로그인 성공 시: 세션에 사용자 정보를 저장하기
 			request.getSession().setAttribute("loggedInUser", user);
+			
+			// 캐시를 비활성화하는 HTTP 헤더 설정
+	        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	        response.setHeader("Pragma", "no-cache");
+	        response.setDateHeader("Expires", 0);
+	        
+	        // 로그인 된 상태로, 메인 페이지로 이동하기
 			response.sendRedirect(request.getContextPath() + "/main.jsp");
 		} else {
 			// 로그인 실패 시: 오류 메시지를 request에 담아 다시 로그인 페이지로 포워드
