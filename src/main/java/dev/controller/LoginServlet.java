@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dev.dao.UserDAO; // DB 접근을 위한 DAO 클래스를 import
 import dev.model.User; // User 모델 클래스를 import
@@ -43,8 +44,17 @@ public class LoginServlet extends HttpServlet {
 
 		// 3. 로그인 결과에 따라 페이지 이동
 		if (user != null) {
-			// 로그인 성공 시: 세션에 사용자 정보를 저장하기
-			request.getSession().setAttribute("loggedInUser", user);
+			// 1. 기존 세션 무효화: 이전에 만들어졌을 수 있는 세션 ID를 파기
+		    HttpSession oldSession = request.getSession(false);
+		    if (oldSession != null) {
+		        oldSession.invalidate();
+		    }
+
+		    // 2. 새로운 세션 생성: 새로운 세션 ID를 발급받음
+		    HttpSession newSession = request.getSession(true);
+		    
+		    // 3. 새 세션에 사용자 정보 저장
+		    newSession.setAttribute("loggedInUser", user);
 			
 			// 캐시를 비활성화하는 HTTP 헤더 설정
 	        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
