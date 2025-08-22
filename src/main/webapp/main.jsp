@@ -507,7 +507,13 @@ body {
 					</div>
 				</c:when>
 				<c:otherwise>
-					<button class="login-btn" onclick="showLogin()">로그인</button>
+					<button class="login-btn" onclick="login()">로그인</button>
+					<script>
+                    	const contextPath = '<%=request.getContextPath()%>';
+                    	function login() {
+                    	    window.location.href = contextPath + '/login.jsp';
+                    	}
+                    	</script>
 				</c:otherwise>
 			</c:choose>
 
@@ -668,6 +674,8 @@ body {
             //             setUserData(data.user);
             //         }
             //     });
+        
+        	HttpSession session = req.getSession(false); 
         }
 
         // 사용자 데이터 설정
@@ -947,11 +955,6 @@ function renderBooksGrid(books) {
         }
 
         // 이벤트 핸들러 함수들
-        function showLogin() {
-            // 실제 로그인 페이지로 이동
-            window.location.href = contextPath + '/login.jsp';
-        }
-
         function showNotifications() {
             window.location.href = contextPath + '/notification.jsp';
         }

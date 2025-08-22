@@ -18,7 +18,12 @@ public class LogoutServlet extends HttpServlet {
 		if (session != null) {
 			session.invalidate();
 		}
-
+		
+		// 캐시를 비활성화하는 HTTP 헤더 설정
+		resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		resp.setHeader("Pragma", "no-cache");
+		resp.setDateHeader("Expires", 0);
+        
 		// 로그아웃 후 초기 로그인 페이지로 리다이렉트
 		resp.sendRedirect(req.getContextPath() + "/login.jsp");
 
