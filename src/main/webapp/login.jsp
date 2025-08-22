@@ -65,8 +65,7 @@ body {
 </head>
 <body>
 	<div class="login-container">
-		<h2>독서와 무제한 친해지리</h2>
-		<p>20만 권 속에서 인생책을 찾아보세요</p>
+		<h2>로그인</h2>
 		<form class="login-form" action="LoginServlet" method="post">
 			<div class="error-message" id="errorMessage"></div>
 			<input type="text" id="nickname" name="nickname" placeholder="닉네임"
