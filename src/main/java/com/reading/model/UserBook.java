@@ -1,7 +1,13 @@
 package com.reading.model;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+
+import com.reading.util.DBConnection;
 
 public class UserBook {
     private int userId;
@@ -61,4 +67,5 @@ public class UserBook {
     
     public Book getBook() { return book; }
     public void setBook(Book book) { this.book = book; }
+
 }

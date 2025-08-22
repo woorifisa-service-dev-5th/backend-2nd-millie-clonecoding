@@ -205,5 +205,29 @@ public class BookDAO {
         }
         return books;
     }
+    public boolean addUserBook(int userId, int bookId) throws SQLException {
+        // 이미 존재하는지 확인
+        String checkSql = "SELECT COUNT(*) FROM userbook WHERE user_id=? AND book_id=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            checkStmt.setInt(1, userId);
+            checkStmt.setInt(2, bookId);
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return false; // 이미 존재
+            }
+        }
+
+        // 존재하지 않으면 삽입
+        String insertSql = "INSERT INTO userbook(user_id, book_id, reading_status) VALUES (?, ?, 'to_read')";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+            insertStmt.setInt(1, userId);
+            insertStmt.setInt(2, bookId);
+            insertStmt.executeUpdate();
+        }
+
+        return true;
+    }
 
 }

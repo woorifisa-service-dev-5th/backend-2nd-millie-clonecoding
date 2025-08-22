@@ -46,10 +46,12 @@ public class BookServlet extends HttpServlet {
         List<Map<String, Object>> books = new ArrayList<>();
         
         try (Connection conn = DBConnection.getConnection()) {
-            String sql = "SELECT b.*, ub.reading_status " +
-                        "FROM book b " +
-                        "LEFT JOIN userbook ub ON b.id = ub.book_id AND ub.user_id = ? " +
-                        "ORDER BY b.id";
+            String sql = "SELECT b.*, ub.reading_status\r\n"
+            		+ "FROM book b\r\n"
+            		+ "INNER JOIN userbook ub\r\n"
+            		+ "    ON b.id = ub.book_id\r\n"
+            		+ "WHERE ub.user_id = ?\r\n"
+            		+ "ORDER BY b.id;";
             
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userId);

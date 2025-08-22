@@ -346,54 +346,17 @@
 
         .status-reading {
             background: #28a745;
-            color: white;
-        }
-
-        .status-completed {
-            background: #007bff;
-            color: white;
-        }
-
-        .status-want_to_read {
-            background: #ffc107;
             color: #333;
         }
 
-        .calendar {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 1px;
-            background: #e9ecef;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .calendar-day {
-            background: white;
-            padding: 10px 5px;
-            text-align: center;
-            font-size: 12px;
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .calendar-day:hover {
-            background: #f8f9fa;
-        }
-
-        .calendar-day.today {
-            background: #007bff;
-            color: white;
-            border-radius: 50%;
-        }
-
-        .calendar-day.has-reading {
+        .status-completed {
             background: #28a745;
-            color: white;
+            color: #333;
+        }
+
+        .status-to_read {
+            background: #28a745;
+            color: #333;
         }
 
         .reading-dot {
@@ -578,7 +541,7 @@
                     </div>
                 </div>
 
-                <div class="alert" id="user-alert">
+                <div class="alert" id="user-alert" onclick="location.href='/Millie/bookList'">
                     💡 독서 기록을 시작해보세요! 첫 번째 책을 추가해보세요.
                 </div>
             </div>
@@ -609,33 +572,6 @@
                     </div>
                     <div class="bookshelf-books" id="bookshelf-preview">
                         <!-- 서버에서 책장 데이터를 받아와서 동적으로 생성 -->
-                    </div>
-                </div>
-
-                <!-- 독서 캘린더 섹션 -->
-                <div class="section">
-                    <div class="section-header">
-                        <h2 class="section-title">
-                            <select id="month-selector" style="font-size: 16px; border: none; background: none; cursor: pointer;">
-                                <option value="0">1월</option>
-                                <option value="1">2월</option>
-                                <option value="2">3월</option>
-                                <option value="3">4월</option>
-                                <option value="4">5월</option>
-                                <option value="5">6월</option>
-                                <option value="6">7월</option>
-                                <option value="7" selected>8월</option>
-                                <option value="8">9월</option>
-                                <option value="9">10월</option>
-                                <option value="10">11월</option>
-                                <option value="11">12월</option>
-                            </select>
-                            독서 캘린더
-                        </h2>
-                        <a href="#" class="section-link" onclick="showFullCalendar()">전체보기 ></a>
-                    </div>
-                    <div class="calendar" id="calendar">
-                        <!-- JavaScript로 동적 생성, 서버에서 독서 기록 데이터 반영 -->
                     </div>
                 </div>
 
@@ -781,7 +717,6 @@
      loadBookshelfPreview();  // 이 함수 정의 추가
      loadReadingRecords();
      loadUserStats();
-     generateCalendar(currentMonth, currentYear);
  }
 
  // 사용자 도서 목록 로드 *** userId 파라미터 추가 ***
@@ -1002,69 +937,6 @@
      document.getElementById('user-target').textContent = stats.target || 5;
      document.getElementById('user-rank').textContent = stats.rank || 0;
  }
-
- // 달력 생성
- function generateCalendar(month, year) {
-     const calendar = document.getElementById('calendar');
-     if (!calendar) return;
-     
-     calendar.innerHTML = '';
-     
-     const dayHeaders = ['일', '월', '화', '수', '목', '금', '토'];
-     dayHeaders.forEach(day => {
-         const dayElement = document.createElement('div');
-         dayElement.className = 'calendar-day';
-         dayElement.style.fontWeight = 'bold';
-         dayElement.style.background = '#f8f9fa';
-         dayElement.textContent = day;
-         calendar.appendChild(dayElement);
-     });
-
-     const firstDay = new Date(year, month, 1);
-     const lastDay = new Date(year, month + 1, 0);
-     const startDate = firstDay.getDay();
-     const daysInMonth = lastDay.getDate();
-
-     for (let i = 0; i < startDate; i++) {
-         const emptyDay = document.createElement('div');
-         emptyDay.className = 'calendar-day';
-         calendar.appendChild(emptyDay);
-     }
-
-     for (let day = 1; day <= daysInMonth; day++) {
-         const dayElement = document.createElement('div');
-         dayElement.className = 'calendar-day';
-         dayElement.textContent = day;
-         
-         const today = new Date();
-         if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
-             dayElement.classList.add('today');
-         }
-         
-         if (hasReadingRecord(year, month, day)) {
-             dayElement.classList.add('has-reading');
-         }
-         
-         dayElement.addEventListener('click', () => showDayDetail(year, month, day));
-         calendar.appendChild(dayElement);
-     }
- }
-
- // 특정 날짜에 독서 기록이 있는지 확인
- function hasReadingRecord(year, month, day) {
-     return readingRecords.some(record => {
-         const recordDate = new Date(record.readingDate);
-         return recordDate.getFullYear() === year && 
-                recordDate.getMonth() === month && 
-                recordDate.getDate() === day;
-     });
- }
-
- // 독서 기록으로 달력 업데이트
- function updateCalendarWithRecords() {
-     generateCalendar(currentMonth, currentYear);
- }
-
  // 이벤트 리스너 설정
  function setupEventListeners() {
      const monthSelector = document.getElementById('month-selector');
